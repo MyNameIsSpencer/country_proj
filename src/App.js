@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import SearchBar from './SearchBar';
-import Mapper from './Mapper';
-import SimpleMap from './SimpleMap';
+import SearchBar from './Components/SearchBar';
+import Pop1 from './Components/Pop1';
+import WorldBank from './Components/WorldBank';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <p>Woooooaaaahhhh    Here it is!!!!</p>
         <SearchBar />
-        <Mapper />
-        <SimpleMap />
+        <Pop1 />
+        <WorldBank />
       </div>
     );
   }
