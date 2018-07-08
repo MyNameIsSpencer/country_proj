@@ -3,29 +3,22 @@ import axios from 'axios';
 
 
 export default class WorldBank extends Component {
-  state = {
-    info: null,
-    popper: "0"
-  }
+
 
   componentDidMount() {
     axios.get(`
       http://api.worldbank.org/v2/countries/wld/indicators/SP.POP.TOTL?format=json
       `)
     .then(res => {
-      this.setState({ info: res.data });
-      this.setState({ popper: res.data[1][0].value });
-      console.log(this.state.popper);
-
-    });
+      console.log(res);
+    })
   }
 
   render(){
     return(
       <div>
-        <h1>WorldBank Stuuufufufuf</h1>
-        <h2>{ this.state.popper }</h2>
-        {/* {this.state.info.data[0]} */}
+
+
       </div>
     )
   }

@@ -53,3 +53,36 @@ render() {
     )
   }
 }
+
+
+
+
+
+
+
+
+//   VVV   codes
+Region codes
+WLD - All countries
+EAP - (developing only)
+EAS - (all income levels)
+ECA - (developing only)
+ECS - (all income levels)
+LAC - (developing only)
+LCN - (all income levels)
+MNA - (developing only)
+MEA - (all income levels)
+NAC
+SAS
+SSA - (developing only)
+SSF - (all income levels)
+Income level codes
+NOC
+OEC
+HIC
+HPC
+LIC
+LMC
+LMY
+MIC
+UMC
