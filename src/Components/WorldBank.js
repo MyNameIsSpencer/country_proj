@@ -2,6 +2,19 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 
+function addCommas(nStr) {
+  nStr += '';
+  var x = nStr.split('.');
+  var x1 = x[0];
+  var x2 = x.length > 1 ? '.' + x[1] : '';
+  var rgx = /(\d+)(\d{3})/;
+  while (rgx.test(x1)) {
+   x1 = x1.replace(rgx, '$1' + ',' + '$2');
+  }
+  return x1 + x2;
+}
+
+
 export default class WorldBank extends Component {
   state = {
     info: null,
@@ -23,9 +36,8 @@ export default class WorldBank extends Component {
   render(){
     return(
       <div>
-        <h1>WorldBank Stuuufufufuf</h1>
-        <h2>{ this.state.popper }</h2>
-        {/* {this.state.info.data[0]} */}
+        <h2>World Population Last Year</h2>
+        <h2>{ addCommas(this.state.popper) }</h2>
       </div>
     )
   }

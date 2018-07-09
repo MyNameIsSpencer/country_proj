@@ -1,3 +1,18 @@
+event.preventDefault();
+let tempArr = [];
+let userWord = event.target.value;
+for (let i = 0; i < country_list.length; i ++) {
+  if (country_list[i].includes(userWord)) {
+    tempArr.push(country_list[i])
+  }
+}
+this.setState({
+  autocompleteList: tempArr
+})
+console.log(this.state.autocompleteList);
+
+
+
 
 
 
