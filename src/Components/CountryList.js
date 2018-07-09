@@ -84,8 +84,4 @@ export default {
     'Venezuela':	'VE', 'Vietnam':	'VN', 'Virgin Islands, British':	'VG',
     'Virgin Islands':	'VI', 'Wallis and Futuna':	'WF', 'Western Sahara':	'EH',
     'Yemen':	'YE', 'Zambia':	'ZM', 'Zimbabwe':	'ZW'
-
-
-
-
 };

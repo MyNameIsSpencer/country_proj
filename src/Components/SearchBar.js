@@ -13,6 +13,7 @@ class SearchBar extends Component {
     }
     this.handleUserInputChange = this.handleUserInputChange.bind(this);
     this.handleAutocompleteOption = this.handleAutocompleteOption.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleUserInputChange(event) {
@@ -21,10 +22,17 @@ class SearchBar extends Component {
   }
 
   handleAutocompleteOption(event) {
-    console.log(event.target.innerText);
+    event.preventDefault();
     this.setState({ letters: event.target.innerText });
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    let countrySelection = this.state.letters.toString();
+    console.log(countrySelection);
+    console.log(CountryList[countrySelection]);
+
+  }
 
   render() {
     return(
