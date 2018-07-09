@@ -9,55 +9,35 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       letters: "",
-      autocompleteList: [],
       countryCode: ""
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handleUserInputChange = this.handleUserInputChange.bind(this);
+    this.handleAutocompleteOption = this.handleAutocompleteOption.bind(this);
   }
 
-  handleChange(event) {
+  handleUserInputChange(event) {
     event.preventDefault();
     this.setState({ letters: event.target.value });
-    console.log(CountryList);
   }
 
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //
-  //   for (let i = 0; i < country_list.length; i++) {
-  //     if (letters.toLowerCase() == Object.keys(country_list)[i].toLowerCase()) {
-  //       this.state.countryCode = country_list[i];
-  //     }
-  //
-  //   }
-  //
-  //   // componentDidMount() {
-  //   //   axios.get(`
-  //   //     http://api.worldbank.org/v2/countries/wld/indicators/SP.POP.TOTL?format=json
-  //   //     `)
-  //   //   .then(res => {
-  //   //     this.setState({ info: res.data });
-  //   //     this.setState({ popper: res.data[1][0].value });
-  //   //     console.log(this.state.popper);
-  //   //
-  //   //   });
-  //   // }
-  //
-  //
-  // }
+  handleAutocompleteOption(event) {
+    console.log(event.target.innerText);
+    this.setState({ letters: event.target.innerText });
+  }
+
 
   render() {
     return(
       <div>
         <p> THe SearchBar stuffffffff</p>
         <form onSubmit={this.handleSubmit}>
-          <input placeholder="Country Name" onChange={this.handleChange} value={this.state.letters}>
+          <input placeholder="Country Name" onChange={this.handleUserInputChange} value={this.state.letters}>
           </input>
           <button type="submit"> Submit </button>
 
         </form>
 
-        <AutocompleteBox letters={this.state.letters} countryList={CountryList}/>
+        <AutocompleteBox letters={this.state.letters} countryList={CountryList} handleAutocompleteOption={this.handleAutocompleteOption}/>
       </div>
     );
   }

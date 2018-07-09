@@ -1,5 +1,7 @@
 li {
   list-style-type: none;
+  text-align: left;
+  margin-left: 15px;
 }
 
 .autoCountry {

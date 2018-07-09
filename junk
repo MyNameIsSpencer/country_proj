@@ -1,17 +1,43 @@
-event.preventDefault();
-let tempArr = [];
-let userWord = event.target.value;
-for (let i = 0; i < country_list.length; i ++) {
-  if (country_list[i].includes(userWord)) {
-    tempArr.push(country_list[i])
-  }
-}
-this.setState({
-  autocompleteList: tempArr
-})
-console.log(this.state.autocompleteList);
+
+<button type="submit" onClick={this.props.removeTaskFunction(todo)}>Submit</button>
+
+<button type="submit" onClick={() => { this.props.removeTaskFunction(todo) }}>Submit</button>
 
 
+
+
+
+
+
+
+
+
+
+
+// handleSubmit(event) {
+//   event.preventDefault();
+//
+//   for (let i = 0; i < country_list.length; i++) {
+//     if (letters.toLowerCase() == Object.keys(country_list)[i].toLowerCase()) {
+//       this.state.countryCode = country_list[i];
+//     }
+//
+//   }
+//
+//   // componentDidMount() {
+//   //   axios.get(`
+//   //     http://api.worldbank.org/v2/countries/wld/indicators/SP.POP.TOTL?format=json
+//   //     `)
+//   //   .then(res => {
+//   //     this.setState({ info: res.data });
+//   //     this.setState({ popper: res.data[1][0].value });
+//   //     console.log(this.state.popper);
+//   //
+//   //   });
+//   // }
+//
+//
+// }
 
 
 
