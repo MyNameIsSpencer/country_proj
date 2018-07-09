@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import AutocompleteBox from './AutocompleteBox';
-
+import '../CSS/SearchBar.css';
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      letters: ""
+      letters: "",
+      countryCode: ""
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -16,10 +17,6 @@ class SearchBar extends Component {
     this.setState({ letters: event.target.value })
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-  }
 
   render() {
     return(
@@ -34,7 +31,7 @@ class SearchBar extends Component {
 
 
 
-        
+
 
 
 

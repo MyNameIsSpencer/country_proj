@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from './Components/SearchBar';
 import WorldBank from './Components/WorldBank';
-import './App.css';
+import './CSS/App.css';
 
 class App extends Component {
   render() {
