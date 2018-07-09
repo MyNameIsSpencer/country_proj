@@ -28,10 +28,8 @@ class SearchBar extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let countrySelection = this.state.letters.toString();
-    console.log(countrySelection);
-    console.log(CountryList[countrySelection]);
-
+    let countrySelection = this.state.letters;
+    this.setState({ countryCode: CountryList[countrySelection]});
   }
 
   render() {
