@@ -13,12 +13,6 @@ class SearchBar extends Component {
     this.handleUserInputChange = this.handleUserInputChange.bind(this);
     this.handleAutocompleteOption = this.handleAutocompleteOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.logger = this.logger.bind(this);
-  }
-
-  logger(event) {
-    event.preventDefault();
-    console.log("Letters: " + this.state.letters);
   }
 
   handleUserInputChange(event) {
@@ -46,7 +40,6 @@ class SearchBar extends Component {
           <input placeholder="Country Name" onChange={this.handleUserInputChange} value={this.state.letters}>
           </input>
           <button type="submit" onClick={this.handleSubmit}> Submit </button>
-          <button type="logger" onClick={this.logger}> Logger </button>
 
         </form>
 

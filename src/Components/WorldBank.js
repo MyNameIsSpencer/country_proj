@@ -35,7 +35,7 @@ export default class WorldBank extends Component {
   render(){
     return(
       <div>
-        <h2>{ this.props.code } Population Last Year</h2>
+        <h2>{ this.props.name } Population Last Year</h2>
         <h2>{ addCommas(this.state.popper) }</h2>
       </div>
     )

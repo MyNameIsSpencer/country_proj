@@ -14,7 +14,7 @@ class App extends Component {
       countryCodesArr: []
     }
     this.addToSelectedCountries = this.addToSelectedCountries.bind(this);
-    // this.renderCountries = this.renderCountries.bind(this);
+    // this.renderCountries = this.renderCountries.bind(this);    <<<  don't need???
     this.appLogger = this.appLogger.bind(this);
     this.oneCountry = this.oneCountry.bind(this);
    }
@@ -23,34 +23,35 @@ class App extends Component {
     console.log("Codes Array: " + this.state.countryCodesArr);
   }
 
+  oneCountry(country) {
+    let newCode = CountryList[country];
+    console.log('oneCountry country: ' + country);
+    console.log('New Code: ' + newCode);
+    this.addToSelectedCountries(country, newCode);
+  }
+
   addToSelectedCountries(countryName, countryCode) {
-    let tempCountryList = this.state.countryNames;
-    let tempCountryCodes = this.state.countryCodesArr;
-    tempCountryList.push(countryName);
-    tempCountryCodes.push(countryCode);
+    let newCountryObject = {id: this.state.countryNumber, name: countryName, code: countryCode}
+
+    let tempSelectedCounties = this.state.selectedCountries;
+    tempSelectedCounties.push(newCountryObject);
+    let newCountryNumber = this.state.countryNumber + 1;
     this.setState({
-      countryNames: tempCountryList,
-      countryCodesArr: tempCountryCodes
+      selectedCountries: tempSelectedCounties,
+      countryNumber: newCountryNumber
     });
     this.renderCountries();
   }
 
 
-  oneCountry(country) {
-    let newCountryNumber = this.countryNumber + 1;
-    let newCode = CountryList[country];
-    console.log('oneCountry country: ' + country);
-    console.log('New Code: ' + newCode);
-    this.setState({ countryNumber: newCountryNumber})
-    this.addToSelectedCountries(country, newCode);
-  }
-
-
   renderCountries() {
-    return this.state.countryCodesArr.map( code => {
+    return this.state.selectedCountries.map( country => {
+      console.log('id: ' + country.id);
+      console.log('code: ' + country.code);
+      console.log('name: ' + country.name);
       return (
         <li>
-          <WorldBank key={ code } code={ code } />
+          <WorldBank key={country.id} code={country.code} name={country.name}/>
         </li>
       )
     });
