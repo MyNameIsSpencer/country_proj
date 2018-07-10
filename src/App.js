@@ -13,7 +13,7 @@ class App extends Component {
       countryNames: [],
       countryCodesArr: []
     }
-    this.addToCountryList = this.addToCountryList.bind(this);
+    this.addToSelectedCountries = this.addToSelectedCountries.bind(this);
     // this.renderCountries = this.renderCountries.bind(this);
     this.appLogger = this.appLogger.bind(this);
     this.oneCountry = this.oneCountry.bind(this);
@@ -23,7 +23,7 @@ class App extends Component {
     console.log("Codes Array: " + this.state.countryCodesArr);
   }
 
-  addToCountryList(countryName, countryCode) {
+  addToSelectedCountries(countryName, countryCode) {
     let tempCountryList = this.state.countryNames;
     let tempCountryCodes = this.state.countryCodesArr;
     tempCountryList.push(countryName);
@@ -42,7 +42,7 @@ class App extends Component {
     console.log('oneCountry country: ' + country);
     console.log('New Code: ' + newCode);
     this.setState({ countryNumber: newCountryNumber})
-    this.addToCountryList(country, newCode);
+    this.addToSelectedCountries(country, newCode);
   }
 
 
