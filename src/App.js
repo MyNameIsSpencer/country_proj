@@ -8,11 +8,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      countryNumber: 0,
       countryNames: [],
       countryCodesArr: []
     }
-    this.addCountryCode = this.addCountryCode.bind(this);
-    this.renderCountries = this.renderCountries.bind(this);
+    this.addToCountryList = this.addToCountryList.bind(this);
+    // this.renderCountries = this.renderCountries.bind(this);
     this.appLogger = this.appLogger.bind(this);
     this.oneCountry = this.oneCountry.bind(this);
    }
@@ -21,16 +22,29 @@ class App extends Component {
     console.log("Codes Array: " + this.state.countryCodesArr);
   }
 
-  addCountryCode(code) {
+  addToCountryList(countryName, countryCode) {
+    let tempCountryList = this.state.countryNames;
     let tempCountryCodes = this.state.countryCodesArr;
-    tempCountryCodes.push(code);
-    this.setState({ countryCodesArr: tempCountryCodes });
+    tempCountryList.push(countryName);
+    tempCountryCodes.push(countryCode);
+    this.setState({
+      countryNames: tempCountryList,
+      countryCodesArr: tempCountryCodes
+    });
     this.renderCountries();
   }
 
+
   oneCountry(country) {
-    
+    let newCountryNumber = this.countryNumber + 1;
+    let newCode = CountryList[country];
+    // console.log('oneCountry country: ' + country);
+    // console.log('selectedCountry: ' + selectedCountry);
+    // console.log('New Code: ' + newCode);
+    this.setState({ countryNumber: newCountryNumber})
+    this.addToCountryList(country, newCode);
   }
+
 
   renderCountries() {
     return this.state.countryCodesArr.map( code => {
@@ -39,22 +53,16 @@ class App extends Component {
           <WorldBank key={ code } code={ code } />
         </li>
       )
-    })
+    });
   }
 
-  // return(
-  //   <ul>
-  //     {this.state.persons.map(person => <li key={person.id}>{person.name}</li>)}
-  //   </ul>
-  // )
 
   render() {
     return (
       <div className="App">
         <button type="logger" onClick={this.appLogger}> App Logger </button>
-        <SearchBar addCountryCode={this.addCountryCode}/>
+        <SearchBar oneCountry={this.oneCountry}/>
         <ul>
-          {this.oneCountry()}
           {this.renderCountries()}
         </ul>
       </div>

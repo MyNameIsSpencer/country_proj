@@ -9,7 +9,6 @@ class SearchBar extends Component {
     super(props);
     this.state = {
       letters: "",
-      countryCode: ""
     }
     this.handleUserInputChange = this.handleUserInputChange.bind(this);
     this.handleAutocompleteOption = this.handleAutocompleteOption.bind(this);
@@ -20,7 +19,6 @@ class SearchBar extends Component {
   logger(event) {
     event.preventDefault();
     console.log("Letters: " + this.state.letters);
-    console.log("Current Code: " + this.state.countryCode);
   }
 
   handleUserInputChange(event) {
@@ -37,16 +35,7 @@ class SearchBar extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let selectedCountry = this.state.letters;
-    let newCode = CountryList[selectedCountry];
-    console.log('New Code: ' + CountryList[selectedCountry]);
-
-
-    this.setState({ countryCode: newCode});
-
-
-    this.props.addCountryCode(this.state.countryCode);
-    // this.setState({ letters: "", countryCode: ""});
-
+    this.props.oneCountry(selectedCountry);
   }
 
   render() {
@@ -56,7 +45,7 @@ class SearchBar extends Component {
         <form onSubmit={this.handleSubmit}>
           <input placeholder="Country Name" onChange={this.handleUserInputChange} value={this.state.letters}>
           </input>
-          <button type="submit"> Submit </button>
+          <button type="submit" onClick={this.handleSubmit}> Submit </button>
           <button type="logger" onClick={this.logger}> Logger </button>
 
         </form>
