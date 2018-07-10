@@ -10,8 +10,6 @@ class App extends Component {
     this.state = {
       countryNumber: 0,
       selectedCountries: [],
-      countryNames: [],
-      countryCodesArr: []
     }
     this.addToSelectedCountries = this.addToSelectedCountries.bind(this);
     // this.renderCountries = this.renderCountries.bind(this);    <<<  don't need???
@@ -20,13 +18,11 @@ class App extends Component {
    }
 
   appLogger() {
-    console.log("Codes Array: " + this.state.countryCodesArr);
+    console.log("Selected Countries: " + this.state.selectedCountries);
   }
 
   oneCountry(country) {
     let newCode = CountryList[country];
-    console.log('oneCountry country: ' + country);
-    console.log('New Code: ' + newCode);
     this.addToSelectedCountries(country, newCode);
   }
 
@@ -46,12 +42,9 @@ class App extends Component {
 
   renderCountries() {
     return this.state.selectedCountries.map( country => {
-      console.log('id: ' + country.id);
-      console.log('code: ' + country.code);
-      console.log('name: ' + country.name);
       return (
-        <li>
-          <WorldBank key={country.id} code={country.code} name={country.name}/>
+        <li key={country.id}>
+          <WorldBank code={country.code} name={country.name}/>
         </li>
       )
     });
