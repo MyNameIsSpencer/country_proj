@@ -22,8 +22,8 @@ export default class WorldBank extends Component {
   }
 
   componentDidMount() {
-    let coder = this.props.code;
-    axios.get(`http://api.worldbank.org/v2/countries/${coder}/indicators/SP.POP.TOTL?format=json`)
+    let code = this.props.code;
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
     .then(res => {
       this.setState({ info: res.data });
       this.setState({ popper: res.data[1][0].value });
