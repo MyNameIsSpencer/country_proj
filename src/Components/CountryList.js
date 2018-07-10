@@ -1,5 +1,3 @@
-import React, { Component } from 'react';
-
 export default {
     'Afghanistan':	'AF', 'Aland Islands':	'AX', 'Albania':	'AL',
     'Algeria':	'DZ', 'American Samoa':	'AS', 'Andorra':	'AD',

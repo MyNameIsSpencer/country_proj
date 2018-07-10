@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       countryNumber: 0,
+      selectedCountries: [],
       countryNames: [],
       countryCodesArr: []
     }
@@ -38,9 +39,8 @@ class App extends Component {
   oneCountry(country) {
     let newCountryNumber = this.countryNumber + 1;
     let newCode = CountryList[country];
-    // console.log('oneCountry country: ' + country);
-    // console.log('selectedCountry: ' + selectedCountry);
-    // console.log('New Code: ' + newCode);
+    console.log('oneCountry country: ' + country);
+    console.log('New Code: ' + newCode);
     this.setState({ countryNumber: newCountryNumber})
     this.addToCountryList(country, newCode);
   }
