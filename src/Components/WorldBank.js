@@ -22,9 +22,8 @@ export default class WorldBank extends Component {
   }
 
   componentDidMount() {
-    axios.get(`
-      http://api.worldbank.org/v2/countries/wld/indicators/SP.POP.TOTL?format=json
-      `)
+    let coder = this.props.code;
+    axios.get(`http://api.worldbank.org/v2/countries/${coder}/indicators/SP.POP.TOTL?format=json`)
     .then(res => {
       this.setState({ info: res.data });
       this.setState({ popper: res.data[1][0].value });
@@ -36,7 +35,7 @@ export default class WorldBank extends Component {
   render(){
     return(
       <div>
-        <h2>World Population Last Year</h2>
+        <h2>{ this.props.code } Population Last Year</h2>
         <h2>{ addCommas(this.state.popper) }</h2>
       </div>
     )
