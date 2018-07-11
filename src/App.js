@@ -54,11 +54,11 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <button type="logger" onClick={this.appLogger}> App Logger </button>
         <SearchBar oneCountry={this.oneCountry}/>
         <ul>
           {this.renderCountries()}
         </ul>
+        <p className="small-point">* Unless mentioned otherwise, statistics refer to {new Date().getFullYear() - 1} and dollar amounts are in USD</p>
       </div>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import '../CSS/WorldBank.css';
 
 
 function addCommas(nStr) {
@@ -17,22 +18,30 @@ function addCommas(nStr) {
 
 export default class WorldBank extends Component {
   state = {
-    popInfo: null,
+    popData: null,
     countryPopulation: "0",
-    generalInfo: null,
+    generalData: null,
     regionId: null,
     regionValue: null,
     incomeLevelId: null,
     incomeLevelValue: null,
-    latitude: null,
-    longtitude: null,
-    capitalCity: ""
+    countryLatitude: null,
+    countruLongtitude: null,
+    capitalCity: "",
+    growthData: null,
+    countryGrowth: null,
+    countryArea: null,
+    populationDensity: null,
+    gdpData: null,
+    countryGDP: null,
+    perCapitaData: null,
+    perCapita: null
   }
 
   getPopulation(code) {
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
     .then(res => {
-      this.setState({ popInfo: res.data, countryPopulation: res.data[1][0].value });
+      this.setState({ popData: res.data, countryPopulation: res.data[1][0].value });
       console.log(this.props.name + " population: " + this.state.countryPopulation);
     });
   }
@@ -41,30 +50,92 @@ export default class WorldBank extends Component {
     axios.get(`http://api.worldbank.org/v2/countries/${code}/?format=json`)
     .then(res => {
       this.setState({
-        generalInfo: res.data,
+        generalData: res.data,
         regionId: res.data[1][0]["adminregion"]["id"],
         regionValue: res.data[1][0]["adminregion"]["value"],
         incomeLevelId: res.data[1][0]["incomeLevel"]["id"],
         incomeLevelValue: res.data[1][0]["incomeLevel"]["value"],
-        latitude: res.data[1][0]["latitude"],
-        longtitude: res.data[1][0]["longtitude"],
-        capitalCity: res.data[1][0]["capitalCity"]
+        countryLatitude: res.data[1][0]["countryLatitude"],
+        countruLongtitude: res.data[1][0]["countruLongtitude"],
+        capitalCity: res.data[1][0]["capitalCity"],
       });
     });
   }
+
+  getPopGrowth(code){
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.GROW?format=json`)
+    .then(res => {
+      this.setState({
+        growthData: res.data,
+        countryGrowth: res.data[1][0].value.toFixed(2)
+      });
+    });
+  }
+
+  getArea(code){
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/AG.LND.TOTL.K2?format=json`)
+    .then(res => {
+      let area = res.data[1][0].value;
+      this.setState({
+        countryArea: area
+      });
+    });
+  }
+
+  getGDP(code) {
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/NY.GDP.MKTP.CD?format=json`)
+    .then(res => {
+      this.setState({
+        gdpData: res.data,
+        countryGDP: res.data[1][0].value.toFixed(2)
+      });
+    });
+  }
+
+  getGDPPerCapita(code) {
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SL.GDP.PCAP.EM.KD?format=json`)
+    .then(res => {
+      this.setState({
+        perCapitaData: res.data,
+        perCapita: res.data[1][0].value.toFixed(2)
+      });
+    });
+  }
+
+  getGDPPerCapita(code) {
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SL.GDP.PCAP.EM.KD?format=json`)
+    .then(res => {
+      this.setState({
+        perCapitaData: res.data,
+        perCapita: res.data[1][0].value.toFixed(2)
+      });
+    });
+  }
+
 
   componentDidMount() {
     let code = this.props.code;
     this.getPopulation(code);
     this.getGeneral(code);
+    this.getPopGrowth(code);
+    this.getArea(code);
+    this.getGDP(code);
+    this.getGDPPerCapita(code);
   }
 
   render(){
     return(
       <div>
+        <h1>{this.props.name} </h1>
+        <p>Region: {this.state.regionValue}</p>
         <p>Capital City: {this.state.capitalCity}</p>
-        <p>{ this.props.name } {new Date().getFullYear() - 1} Population: { addCommas(this.state.countryPopulation) }</p>
-        <p></p>
+        <p>Land Area: {addCommas(this.state.countryArea)} km²</p>
+        <p>Population: {addCommas(this.state.countryPopulation)}</p>
+        <p>Pop Growth: {this.state.countryGrowth}%</p>
+        <p>Pop Density: {Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p>
+        <p>Income Level: {this.state.incomeLevelValue}</p>
+        <p>GDP: ${addCommas(this.state.countryGDP)}</p>
+        <p>GDP per Capita: ${addCommas(this.state.perCapita)}</p>
       </div>
     )
   }

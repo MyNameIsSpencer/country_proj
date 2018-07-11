@@ -8,7 +8,7 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      letters: "",
+      letters: "Laos",
     }
     this.handleUserInputChange = this.handleUserInputChange.bind(this);
     this.handleAutocompleteOption = this.handleAutocompleteOption.bind(this);
