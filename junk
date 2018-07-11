@@ -1,3 +1,7 @@
+axios.get(`http://api.worldbank.org/v2/countries/${code}/?format=json`)
+
+
+
 
 <button type="submit" onClick={this.props.removeTaskFunction(todo)}>Submit</button>
 

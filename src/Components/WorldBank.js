@@ -17,26 +17,54 @@ function addCommas(nStr) {
 
 export default class WorldBank extends Component {
   state = {
-    info: null,
-    popper: "0"
+    popInfo: null,
+    countryPopulation: "0",
+    generalInfo: null,
+    regionId: null,
+    regionValue: null,
+    incomeLevelId: null,
+    incomeLevelValue: null,
+    latitude: null,
+    longtitude: null,
+    capitalCity: ""
+  }
+
+  getPopulation(code) {
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
+    .then(res => {
+      this.setState({ popInfo: res.data, countryPopulation: res.data[1][0].value });
+      console.log(this.props.name + " population: " + this.state.countryPopulation);
+    });
+  }
+
+  getGeneral(code) {
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/?format=json`)
+    .then(res => {
+      this.setState({
+        generalInfo: res.data,
+        regionId: res.data[1][0]["adminregion"]["id"],
+        regionValue: res.data[1][0]["adminregion"]["value"],
+        incomeLevelId: res.data[1][0]["incomeLevel"]["id"],
+        incomeLevelValue: res.data[1][0]["incomeLevel"]["value"],
+        latitude: res.data[1][0]["latitude"],
+        longtitude: res.data[1][0]["longtitude"],
+        capitalCity: res.data[1][0]["capitalCity"]
+      });
+    });
   }
 
   componentDidMount() {
     let code = this.props.code;
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
-    .then(res => {
-      this.setState({ info: res.data });
-      this.setState({ popper: res.data[1][0].value });
-      console.log(this.state.popper);
-
-    });
+    this.getPopulation(code);
+    this.getGeneral(code);
   }
 
   render(){
     return(
       <div>
-        <h2>{ this.props.name } Population Last Year</h2>
-        <h2>{ addCommas(this.state.popper) }</h2>
+        <p>Capital City: {this.state.capitalCity}</p>
+        <p>{ this.props.name } {new Date().getFullYear() - 1} Population: { addCommas(this.state.countryPopulation) }</p>
+        <p></p>
       </div>
     )
   }
