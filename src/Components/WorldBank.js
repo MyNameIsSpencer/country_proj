@@ -18,6 +18,7 @@ function addCommas(nStr) {
 
 export default class WorldBank extends Component {
   state = {
+    flagUrl: null,
     popData: null,
     countryPopulation: "0",
     generalData: null,
@@ -126,6 +127,8 @@ export default class WorldBank extends Component {
     });
   }
 
+
+
   componentDidMount() {
     let code = this.props.code;
     this.getPopulation(code);
@@ -135,11 +138,13 @@ export default class WorldBank extends Component {
     this.getGDP(code);
     this.getGDPPerCapita(code);
     this.getPractice(code);
+    this.setState({ flagUrl: `http://www.countryflags.io/${this.props.code}/flat/64.png`});
   }
 
   render(){
     return(
       <div>
+        <img src={this.state.flagUrl} />
         <h1>{this.props.name} </h1>
         <p>Region: {this.state.regionValue}</p>
         <p>Capital City: {this.state.capitalCity}</p>
