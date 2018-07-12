@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import DebtByGNI from './GniData.js';
 import '../CSS/WorldBank.css';
 
 
@@ -18,6 +19,7 @@ function addCommas(nStr) {
 
 export default class WorldBank extends Component {
   state = {
+    testCountry: "China",
     flagUrl: null,
     popData: null,
     countryPopulation: "0",
@@ -36,7 +38,9 @@ export default class WorldBank extends Component {
     gdpData: null,
     countryGDP: null,
     perCapitaData: null,
-    perCapita: null
+    perCapita: null,
+    gniData: null,
+    countryGNI: null
   }
 
   getPopulation(code) {
@@ -118,27 +122,50 @@ export default class WorldBank extends Component {
   // let query = 'DT.NTR.DECT.CD';     <<<<<<< works partially  Net transfers on external debt are net flows minus interest payments during the year; negative transfers show net transfers made by the borrower to the creditor during the year. Data are in current U.S. dollars
   // let query = 'DT.DOD.PVLX.GN.ZS';   <<<<<< 2016 only    present debt as % of gni
 
-  getPractice(code) {
-    let query = 'DT.DOD.PVLX.GN.ZS';
+  getDebtByGNI(code) {
+    let query = 'NY.GNP.MKTP.CD';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
-      console.log("Practice");
-      console.log(res.data[1]);
+      this.setState({
+        gniData: res.data,
+        countryGNI: res.data[1][0].value
+      });
+      let testCountry = this.props.name;
+      let gni = this.state.countryGNI;
+      let percenter = DebtByGNI[25][testCountry][45];
+      let ender = (percenter / 100) * gni;
+
+      // console.log(DebtByGNI[25][testCountry][45]);
+      // console.log(DebtByGNI[25].China[45]);
+      console.log(addCommas(ender.toFixed(2)));
     });
   }
 
+  getDebtPortion() {
+  }
+
+  // getPractice(code) {
+  //   let query = 'NY.GNP.MKTP.CD';
+  //   axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+  //   .then(res => {
+  //     console.log("Practice");
+  //     console.log(res.data[1][2]);
+  //   });
+  // }
 
 
   componentDidMount() {
     let code = this.props.code;
+    // this.getPractice(code);
     this.getPopulation(code);
     this.getGeneral(code);
     this.getPopGrowth(code);
     this.getArea(code);
     this.getGDP(code);
     this.getGDPPerCapita(code);
-    this.getPractice(code);
     this.setState({ flagUrl: `http://www.countryflags.io/${this.props.code}/flat/64.png`});
+    this.getDebtByGNI(code);
+    this.getDebtPortion();
   }
 
   render(){
@@ -155,6 +182,7 @@ export default class WorldBank extends Component {
         <p>Income Level: {this.state.incomeLevelValue}</p>
         <p>GDP: ${addCommas(this.state.countryGDP)}</p>
         <p>GDP per Capita: ${addCommas(this.state.perCapita)}</p>
+        <p></p>
       </div>
     )
   }

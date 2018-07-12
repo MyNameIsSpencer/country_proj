@@ -30,7 +30,7 @@ class App extends Component {
     let newCountryObject = {id: this.state.countryNumber, name: countryName, code: countryCode}
 
     let tempSelectedCounties = this.state.selectedCountries;
-    tempSelectedCounties.push(newCountryObject);
+    tempSelectedCounties.unshift(newCountryObject);
     let newCountryNumber = this.state.countryNumber + 1;
     this.setState({
       selectedCountries: tempSelectedCounties,
