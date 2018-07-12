@@ -113,6 +113,19 @@ export default class WorldBank extends Component {
   }
 
 
+  // let query = 'DT.NFL.DECT.CD';    <<<<<<Works partially   "Net flows on external debt, total (NFL, current US$)"
+  // let query = 'DT.NTR.DECT.CD';     <<<<<<< works partially  Net transfers on external debt are net flows minus interest payments during the year; negative transfers show net transfers made by the borrower to the creditor during the year. Data are in current U.S. dollars
+  // let query = 'DT.DOD.PVLX.GN.ZS';   <<<<<< 2016 only    present debt as % of gni
+
+  getPractice(code) {
+    let query = 'DT.DOD.PVLX.GN.ZS';
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    .then(res => {
+      console.log("Practice");
+      console.log(res.data[1]);
+    });
+  }
+
   componentDidMount() {
     let code = this.props.code;
     this.getPopulation(code);
@@ -121,6 +134,7 @@ export default class WorldBank extends Component {
     this.getArea(code);
     this.getGDP(code);
     this.getGDPPerCapita(code);
+    this.getPractice(code);
   }
 
   render(){
