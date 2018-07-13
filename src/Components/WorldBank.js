@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import DebtByGNI from './GniData.js';
+import DebtSet from './DebtSet';
 import '../CSS/WorldBank.css';
 
 
@@ -19,7 +20,7 @@ function addCommas(nStr) {
 
 export default class WorldBank extends Component {
   state = {
-    testCountry: "China",
+    testCountry: "Laos",
     flagUrl: null,
     popData: null,
     countryPopulation: "0",
@@ -40,7 +41,8 @@ export default class WorldBank extends Component {
     perCapitaData: null,
     perCapita: null,
     gniData: null,
-    countryGNI: null
+    countryGNI: null,
+    countryDebt: null
   }
 
   getPopulation(code) {
@@ -117,12 +119,7 @@ export default class WorldBank extends Component {
     });
   }
 
-
-  // let query = 'DT.NFL.DECT.CD';    <<<<<<Works partially   "Net flows on external debt, total (NFL, current US$)"
-  // let query = 'DT.NTR.DECT.CD';     <<<<<<< works partially  Net transfers on external debt are net flows minus interest payments during the year; negative transfers show net transfers made by the borrower to the creditor during the year. Data are in current U.S. dollars
-  // let query = 'DT.DOD.PVLX.GN.ZS';   <<<<<< 2016 only    present debt as % of gni
-
-  getDebtByGNI(code) {
+  getGNI(code) {
     let query = 'NY.GNP.MKTP.CD';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
@@ -130,33 +127,42 @@ export default class WorldBank extends Component {
         gniData: res.data,
         countryGNI: res.data[1][0].value
       });
-      let testCountry = this.props.name;
       let gni = this.state.countryGNI;
-      let percenter = DebtByGNI[25][testCountry][45];
+      let percenter = null;
+      for (let i = 0; i < DebtByGNI.length; i++) {
+        for (var key in DebtByGNI[i]) {
+          if (key == this.props.name) {
+            percenter = DebtByGNI[i][key][45];
+          }
+        }
+        if (percenter) {
+          break;
+        }
+      }
       let ender = (percenter / 100) * gni;
-
-      // console.log(DebtByGNI[25][testCountry][45]);
-      // console.log(DebtByGNI[25].China[45]);
-      console.log(addCommas(ender.toFixed(2)));
+      this.setState({
+        countryDebt: ender
+      });
     });
   }
 
-  getDebtPortion() {
+  getDebtArray() {
+    // for (var key in DebtSet)
+    console.log(DebtSet);
   }
 
-  // getPractice(code) {
-  //   let query = 'NY.GNP.MKTP.CD';
-  //   axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
-  //   .then(res => {
-  //     console.log("Practice");
-  //     console.log(res.data[1][2]);
-  //   });
-  // }
-
+  getDebt(code){
+    let debtSetArr = ["United States", "Germany", "France", "Canada",
+    "Saudi Arabia", "Japan", "United Kingdom", "Italy", "Greece"]
+    if (debtSetArr.includes(this.props.name)) {
+      this.getDebtArray();
+    } else {
+      this.getGNI(code);
+    }
+  }
 
   componentDidMount() {
     let code = this.props.code;
-    // this.getPractice(code);
     this.getPopulation(code);
     this.getGeneral(code);
     this.getPopGrowth(code);
@@ -164,8 +170,7 @@ export default class WorldBank extends Component {
     this.getGDP(code);
     this.getGDPPerCapita(code);
     this.setState({ flagUrl: `http://www.countryflags.io/${this.props.code}/flat/64.png`});
-    this.getDebtByGNI(code);
-    this.getDebtPortion();
+    this.getDebt(code);
   }
 
   render(){
