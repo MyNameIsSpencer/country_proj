@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DebtByGNI from './GniData.js';
 import DebtSet from './DebtSet';
+import debtSetGDP from './DebtGDP';
 import '../CSS/WorldBank.css';
 
 
@@ -137,10 +138,15 @@ export default class WorldBank extends Component {
     });
   }
 
+// GC.DOD.TOTL.GD.ZS
+
   getGNI(code) {
-    let query = 'NY.GNP.MKTP.CD';
+    // let query = 'NY.GNP.MKTP.CD';
+    let query = 'GC.DOD.TOTL.GD.ZS';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
+      console.log('GNI');
+      console.log(res.data);
       this.setState({
         gniData: res.data,
         countryGNI: res.data[1][0].value
@@ -341,24 +347,59 @@ export default class WorldBank extends Component {
   render(){
     return(
       <div>
-        <img src={this.state.flagUrl} />
-        <h1>{this.props.name} </h1>
-        <p>Region: {this.state.regionValue}</p>
-        <p>Capital City: {this.state.capitalCity}</p>
-        <p>Land Area: {addCommas(this.state.countryArea)} km²</p>
-        <p>Population: {addCommas(this.state.countryPopulation)}</p>
-        <p>Pop Growth: {this.state.countryGrowth}%</p>
-        <p>Pop Density: {Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p>
-        <p>Income Level: {this.state.incomeLevelValue}</p>
-        <p>GDP: ${addCommas(this.state.countryGDP)}</p>
-        <p>GDP per Capita: ${addCommas(this.state.perCapita)}</p>
-        <p>Unemployment: {this.state.unemployment}%</p>
-        <p>National Debt: ${this.state.countryDebt}</p>
+        <img className="flag" src={this.state.flagUrl} />
+        <h1 className="countryName">{this.props.name} </h1>
+        <p className="outside-table"><b>Region:</b> {this.state.regionValue}</p>
+        <table>
+          <tbody>
+            <tr>
+              <td><p><b>Capital City: </b></p> </td>
+              <td><p>{this.state.capitalCity}</p> </td>
+              <td className="table-righter"><p><b>Land Area:</b> </p></td>
+              <td><p>{addCommas(this.state.countryArea)} km²</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Population:</b></p></td>
+              <td><p> {addCommas(this.state.countryPopulation)}</p></td>
+              <td className="table-righter"><p><b>Pop Growth:</b></p></td>
+              <td><p>{this.state.countryGrowth}%</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Pop Density: </b></p></td>
+              <td><p>{Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p></td>
+              <td className="table-righter"><p><b>Income Level:</b></p></td>
+              <td><p>{this.state.incomeLevelValue}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>GDP:</b></p></td>
+              <td><p>${addCommas(this.state.countryGDP)}</p></td>
+              <td className="table-righter"><p><b>GDP per Capita:</b></p></td>
+              <td><p>${addCommas(this.state.perCapita)}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Unemployment:</b></p></td>
+              <td><p>{this.state.unemployment}%</p></td>
+              <td className="table-righter"><p><b>National Debt: </b></p></td>
+              <td><p> ${this.state.countryDebt}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Trade Balance ({this.state.tradeBalanceYear}):</b></p></td>
+              <td><p>${addCommas(this.state.tradeBalance)}</p></td>
+              <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
+              <td><p>{this.state.birthRate}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Death Rate 2015 / 1,000: </b></p></td>
+              <td><p id="table-value">{this.state.deathRate}</p></td>
+              <td className="table-righter"><p><b>Life Expectency at Birth 2016: </b></p></td>
+              <td><p id="table-value"> {this.state.lifeExpectency}</p></td>
+            </tr>
+          </tbody>
+        </table>
         {/* <p>National Deficit {this.state.deficitYear}: {this.state.deficit}</p> */}
-        <p>National Trade Balance ({this.state.tradeBalanceYear}): ${addCommas(this.state.tradeBalance)}</p>
-        <p>Birth Rate 2016 (per 1,000 people): {this.state.birthRate}</p>
-        <p>Death Rate 2015 (per 1,000 people): {this.state.deathRate}</p>
-        <p>Life Expectency at Birth 2016: {this.state.lifeExpectency}</p>
+        <br />
+        <hr />
+        <br />
       </div>
     )
   }

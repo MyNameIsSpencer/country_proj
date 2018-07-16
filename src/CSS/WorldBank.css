@@ -1,0 +1,35 @@
+td {
+  /* padding-right: 20px; */
+}
+
+p {
+  margin: 5px auto;
+}
+
+.flag {
+  display: inline-block;
+  margin-bottom: -20px;
+  margin-left: 0px;
+}
+
+.countryName {
+  display: inline-block;
+  margin-left: 30px;
+}
+
+.table-righter {
+  padding-left: 50px;
+  margin-left: 30px;
+}
+
+.table-value {
+  margin-left: 40px;
+}
+
+.outside-table {
+  margin-left: 3px;
+}
+
+#table-value {
+  margin-left: 40px;
+}

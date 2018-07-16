@@ -11,3 +11,7 @@ li {
   margin-left: auto;
   margin-right: auto;
 }
+
+.search-bar {
+  text-align: center;
+}
