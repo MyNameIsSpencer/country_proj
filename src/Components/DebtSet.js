@@ -319,19 +319,19 @@ var countryDebt = {"United States":
   {1981: ['14,037', '26.68', '1,439'] },
   {1980: ['12,845', '22.53', '1,324']}]};
 
-function splitter(bar) {
-  let newBigArr = [];
-  for (let i = 0; i < bar.length; i ++) {
-    let tempYearArr = {}
-    for (var property in bar[i]) {
-      let tempObj = {};
-      let stringer = bar[i][property][0];
-      tempObj[property] = stringer.split("");
-      tempObj[property].push(bar[i][property][1]);
-      newBigArr.push(tempObj);
-    }
-  }
-  return newBigArr;
-}
+// function splitter(bar) {
+//   let newBigArr = [];
+//   for (let i = 0; i < bar.length; i ++) {
+//     let tempYearArr = {}
+//     for (var property in bar[i]) {
+//       let tempObj = {};
+//       let stringer = bar[i][property][0];
+//       tempObj[property] = stringer.split("");
+//       tempObj[property].push(bar[i][property][1]);
+//       newBigArr.push(tempObj);
+//     }
+//   }
+//   return newBigArr;
+// }
 
 export default countryDebt;
