@@ -294,7 +294,7 @@ export default class WorldBank extends Component {
 
   render(){
     return(
-      <div>
+      <div className="world-bank">
         <img className="flag" src={this.state.flagUrl} />
         <h1 className="countryName">{this.props.name} </h1>
         <p className="outside-table"><b>Region:</b> {this.state.regionValue}</p>
@@ -333,14 +333,14 @@ export default class WorldBank extends Component {
             <tr>
               <td><p><b>National Deficit {this.state.debtYear}: </b></p></td>
               <td><p>${addCommas(this.state.countryDeficit)}</p></td>
-              <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
-              <td><p>{this.state.birthRate}</p></td>
+              <td className="table-righter"><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
+              <td><p>{addCommas(this.state.tradeBalance)}</p></td>
             </tr>
             <tr>
               <td><p><b>Death Rate 2015 / 1,000: </b></p></td>
               <td><p id="table-value">{this.state.deathRate}</p></td>
-              <td><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
-              <td><p>{addCommas(this.state.tradeBalance)}</p></td>
+              <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
+              <td><p id="table-value">{this.state.birthRate}</p></td>
             </tr>
             <tr>
               <td><p><b>Life Expectency at Birth 2016: </b></p></td>
