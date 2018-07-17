@@ -192,6 +192,7 @@ export default class WorldBank extends Component {
           break;
         }
       }
+      value = Math.round(value);
       if (value < 0) {
         value = negativeDollar(value);
       }
@@ -258,7 +259,12 @@ export default class WorldBank extends Component {
       prevCountryDebt = (this.state.prevDebtGdpPercent) / 100 * prevGdpOfDebtYear;
       prevCountryDebt = Math.round(prevCountryDebt);
       deficit = countryDebt - prevCountryDebt;
-      deficit = deficit.toFixed(2);
+      deficit = Math.round(deficit);
+      if (deficit < 0) {
+        deficit = negativeDollar(deficit);
+      } else {
+        deficit = `$${deficit}`;
+      }
       this.setState({
         countryDebt: countryDebt,
         prevCountryDebt: prevCountryDebt,
@@ -332,7 +338,7 @@ export default class WorldBank extends Component {
             </tr>
             <tr>
               <td><p><b>National Deficit {this.state.debtYear}: </b></p></td>
-              <td><p>${addCommas(this.state.countryDeficit)}</p></td>
+              <td><p>{addCommas(this.state.countryDeficit)}</p></td>
               <td className="table-righter"><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
               <td><p>{addCommas(this.state.tradeBalance)}</p></td>
             </tr>
