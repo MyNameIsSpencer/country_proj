@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import DebtByGNI from './GniData.js';
-import DebtSet from './DebtSet';
-import debtSetGDP from './DebtGDP';
+import DebtSetGDP from './DebtGDP';
 import '../CSS/WorldBank.css';
 
 
@@ -41,20 +39,23 @@ export default class WorldBank extends Component {
     countryArea: null,
     populationDensity: null,
     gdpData: null,
-    countryGDP: null,
+    countryGdp: null,
+    gdpYear: null,
     perCapitaData: null,
     perCapita: null,
-    gniData: null,
-    countryGNI: null,
+    debtCounter: 0,
+    debtGdpPercent: null,
+    prevDebtGdpPercent: null,
     countryDebt: null,
-    debtSetYear: null,
-    debtSetArray: null,
+    prevCountryDebt: null,
+    countryDeficit: null,
+    debtYear: null,
+    debtArray: null,
     birthData: null,
     birthRate: null,
     deathData: null,
     deathRate: null,
-    deficitData: null,
-    deficit: null,
+    countryDeficit: null,
     deficitYear: null,
     unemployData: null,
     unemployment: null,
@@ -113,7 +114,7 @@ export default class WorldBank extends Component {
     .then(res => {
       this.setState({
         gdpData: res.data,
-        countryGDP: res.data[1][0].value.toFixed(2)
+        countryGdp: Math.round(res.data[1][0].value),
       });
     });
   }
@@ -123,77 +124,10 @@ export default class WorldBank extends Component {
     .then(res => {
       this.setState({
         perCapitaData: res.data,
-        perCapita: res.data[1][0].value.toFixed(2)
+        perCapita: Math.round(res.data[1][0].value)
       });
     });
   }
-
-  getGDPPerCapita(code) {
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SL.GDP.PCAP.EM.KD?format=json`)
-    .then(res => {
-      this.setState({
-        perCapitaData: res.data,
-        perCapita: res.data[1][0].value.toFixed(2)
-      });
-    });
-  }
-
-// GC.DOD.TOTL.GD.ZS
-
-  getGNI(code) {
-    // let query = 'NY.GNP.MKTP.CD';
-    let query = 'GC.DOD.TOTL.GD.ZS';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
-    .then(res => {
-      console.log('GNI');
-      console.log(res.data);
-      this.setState({
-        gniData: res.data,
-        countryGNI: res.data[1][0].value
-      });
-      let gni = this.state.countryGNI;
-      let percenter = null;
-      for (let i = 0; i < DebtByGNI.length; i++) {
-        for (var key in DebtByGNI[i]) {
-          if (key == this.props.name) {
-            percenter = DebtByGNI[i][key][45];
-          }
-        }
-        if (percenter) {
-          break;
-        }
-      }
-      let ender = (percenter / 50) * gni;
-      ender = parseInt(ender).toFixed(2).toString();
-      ender = addCommas(ender);
-      this.setState({
-        countryDebt: ender
-      });
-    });
-  }
-
-  getDebtArray() {
-    for (var key in DebtSet[this.props.name][0]) {
-      let debt = DebtSet[this.props.name][0][key][0];
-      debt = `${debt},000,000.00`;
-      this.setState({
-        debtSetYear: key,
-        countryDebt: debt,
-        debtSetArray: DebtSet[this.props.name][0][key]
-      });
-    };
-  };
-
-  getDebt(code){
-    let debtSetArr = ["United States", "Germany", "France", "Canada",
-    "Saudi Arabia", "Japan", "United Kingdom", "Italy", "Greece"]
-    if (debtSetArr.includes(this.props.name)) {
-      this.getDebtArray();
-    } else {
-      this.getGNI(code);
-    }
-  }
-
 
   getBirthRate(code){  //  <<<< for 2016
     let query = 'SP.DYN.CBRT.IN';
@@ -219,46 +153,11 @@ export default class WorldBank extends Component {
     });
   }
 
-  // getDeficit(code) {  ///// <<<<<<   Need more involved code;  % of GDP
-  //   // let query = '	GC.BAL.CASH.GD.ZS';
-  //   // let query = 'GC.BAL.CASH.CN';
-  //   // let query = 'GC.DOD.TOTL.CN';
-  //   // let query = 'NE.DAB.TOTL.CD';
-  //   let query = 'NY.GNP.MKTP.CD';
-  //
-  //   axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
-  //   .then(res => {
-  //     let deficitData = res.data[1];
-  //     let deficit = null;
-  //     let deficitYear = null;
-  //     for (let i = 0; i < deficitData.length; i ++) {
-  //       if (deficitData[i].value && deficitData[i+1].value) {
-  //         deficit = deficitData[i].value - deficitData[i+1].value;
-  //         deficitYear = deficitData[i].date;
-  //             break;
-  //       }
-  //     }
-  //     console.log('Deficit');
-  //     console.log(res.data[1]);
-  //     if (deficit !== null) {
-  //       deficit = deficit.toFixed(2);
-  //       let deficitStr = '';
-  //       deficitStr = addCommas(deficit.toString());
-  //       this.setState({
-  //         deficitData: deficitData,
-  //         deficitYear: deficitYear,
-  //         deficit: deficitStr
-  //       });
-  //     }
-  //   });
-  // }
 
   getUnemployment(code) {  //  <<<< 2017
     let query = 'SL.UEM.TOTL.ZS';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
-      console.log("Unemployment");
-      console.log(res.data[1][0]['value']);
       let unemployment = res.data[1][0]['value'].toFixed(3);
       this.setState({
         unemployData: res.data,
@@ -273,8 +172,6 @@ export default class WorldBank extends Component {
     .then(res => {
       let lifeExpectency = res.data[1][1]['value'];
       lifeExpectency = Math.round(lifeExpectency);
-      console.log("Life expectency");
-      console.log(lifeExpectency);
       this.setState({
         lifeExpectencyData: res.data,
         lifeExpectency: lifeExpectency
@@ -286,18 +183,17 @@ export default class WorldBank extends Component {
     let query = 'NE.RSB.GNFS.CD';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
-      console.log('trade');
-      console.log(res.data);
       let value = null;
       let year = null;
       for (let i = 0; i < res.data[1].length; i ++) {
-        if (res.data[1][i]['value'] !== null) {
-          let value = res.data[1][i]['value'];
-          let year = res.data[1][i]['year'];
+        if (res.data[1][i].value !== null) {
+          value = res.data[1][i].value;
+          year = res.data[1][i].date;
+          break;
         }
       }
       if (value < 0) {
-        value = value.toString();
+        value = negativeDollar(value);
       }
       this.setState({
         tradeBalanceData: res.data,
@@ -307,15 +203,70 @@ export default class WorldBank extends Component {
     });
   }
 
-  // getGeneric(query, stateArr, setValue) {
-  //   axios.get(`http://api.worldbank.org/v2/countries/${this.props.code}/indicators/${query}?format=json`)
-  //   .then(res => {
-  //     this.setState({
-  //       stateArr[0]: res.data,
-  //       stateArr[1]: setValue
-  //     )}
-  //   }
-  // }
+
+  getDebt(){
+    let countryList = DebtSetGDP[2].Countries;
+    let debtGdpPercent = null;
+    let debtGdpData = null;
+    let prevDebtGdpData = null;
+    let prevDebtGdpPercent = null;
+    let valueSet = null;
+    let debtYear = null;
+    for (let i=0; i < countryList.length; i++) {
+      if (countryList[i][0] === this.props.name) {
+        debtGdpData = countryList[i];
+        prevDebtGdpData = countryList[i+1];
+        valueSet = countryList[i][4].Value;
+        for (let j = valueSet.length - 1; j > 0; j --) {
+          if (valueSet[j] != null) {
+            debtGdpPercent = valueSet[j];
+            prevDebtGdpPercent = valueSet[j-1];
+            debtYear = j + 1800;
+            break;
+          }
+        }
+      }
+    }
+    this.setState({
+      debtGdpPercent: debtGdpPercent,
+      prevDebtGdpPercent: prevDebtGdpPercent,
+      debtYear: debtYear,
+      debtArray: debtGdpData
+    });
+  }
+
+
+  calculateDebtFromGdp() {
+    let gdpDataSet = this.state.gdpData;
+    let gdpOfDebtYear = null;
+    let prevGdpOfDebtYear = null;
+    let countryDebt = null;
+    let prevCountryDebt = null;
+    let deficit = null;
+    if (gdpDataSet !== null && this.state.debtCounter < 1) {
+      this.setState({
+        debtCounter: 2
+      });
+      for (let i = 0; i < gdpDataSet.length; i++) {
+        if (gdpDataSet[1][i].date == this.state.debtYear) {
+          gdpOfDebtYear = gdpDataSet[1][i].value;
+          prevGdpOfDebtYear = gdpDataSet[1][i+1].value;
+        }
+      }
+      countryDebt = (this.state.debtGdpPercent) / 100 * gdpOfDebtYear;
+      countryDebt = Math.round(countryDebt);
+      prevCountryDebt = (this.state.prevDebtGdpPercent) / 100 * prevGdpOfDebtYear;
+      prevCountryDebt = Math.round(prevCountryDebt);
+      deficit = countryDebt - prevCountryDebt;
+      deficit = deficit.toFixed(2);
+      this.setState({
+        countryDebt: countryDebt,
+        prevCountryDebt: prevCountryDebt,
+        countryDeficit: deficit
+      });
+    }
+  }
+
 
   // getPractice(code) {
   //   let query = 'SP.DYN.CBRT.IN';
@@ -333,15 +284,12 @@ export default class WorldBank extends Component {
     this.getGDP(this.props.code);
     this.getGDPPerCapita(this.props.code);
     this.setState({ flagUrl: `http://www.countryflags.io/${this.props.code}/flat/64.png`});
-    this.getDebt(this.props.code);
     this.getBirthRate(this.props.code);
     this.getDeathRate(this.props.code);
-    // this.getDeficit(this.props.code);
+    this.getDebt();
     this.getUnemployment(this.props.code);
     this.getLifeExpectency(this.props.code);
     this.getTradeBalance(this.props.code);
-    // this.getGeneric('NE.RSB.GNFS.CD', ['tradeBalanceData', 'tradeBalance'], res.data[1][0]['value']);  ////  <<< trade balance
-    // this.getPractice(code);
   }
 
   render(){
@@ -372,31 +320,35 @@ export default class WorldBank extends Component {
             </tr>
             <tr>
               <td><p><b>GDP:</b></p></td>
-              <td><p>${addCommas(this.state.countryGDP)}</p></td>
+              <td><p>${addCommas(this.state.countryGdp)}</p></td>
               <td className="table-righter"><p><b>GDP per Capita:</b></p></td>
               <td><p>${addCommas(this.state.perCapita)}</p></td>
             </tr>
             <tr>
-              <td><p><b>Unemployment:</b></p></td>
-              <td><p>{this.state.unemployment}%</p></td>
-              <td className="table-righter"><p><b>National Debt: </b></p></td>
-              <td><p> ${this.state.countryDebt}</p></td>
+              <td><p><b>National Debt {this.state.debtYear}: </b></p></td>
+              <td><p>${addCommas(this.state.countryDebt)}</p></td>
+              <td className="table-righter"><p><b>Unemployment: </b></p></td>
+              <td><p> ${this.state.unemployment}%</p></td>
             </tr>
             <tr>
-              <td><p><b>Trade Balance ({this.state.tradeBalanceYear}):</b></p></td>
-              <td><p>${addCommas(this.state.tradeBalance)}</p></td>
+              <td><p><b>National Deficit {this.state.debtYear}: </b></p></td>
+              <td><p>${addCommas(this.state.countryDeficit)}</p></td>
               <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
               <td><p>{this.state.birthRate}</p></td>
             </tr>
             <tr>
               <td><p><b>Death Rate 2015 / 1,000: </b></p></td>
               <td><p id="table-value">{this.state.deathRate}</p></td>
-              <td className="table-righter"><p><b>Life Expectency at Birth 2016: </b></p></td>
+              <td><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
+              <td><p>{addCommas(this.state.tradeBalance)}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Life Expectency at Birth 2016: </b></p></td>
               <td><p id="table-value"> {this.state.lifeExpectency}</p></td>
             </tr>
           </tbody>
         </table>
-        {/* <p>National Deficit {this.state.deficitYear}: {this.state.deficit}</p> */}
+        <p>{this.calculateDebtFromGdp()}</p>
         <br />
         <hr />
         <br />
