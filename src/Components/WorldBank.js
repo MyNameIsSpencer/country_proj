@@ -303,54 +303,62 @@ export default class WorldBank extends Component {
       <div className="world-bank">
         <img className="flag" src={this.state.flagUrl} />
         <h1 className="countryName">{this.props.name} </h1>
-        <p className="outside-table"><b>Region:</b> {this.state.regionValue}</p>
+        <table>
+          <tbody>
+
+          </tbody>
+        </table>
         <table>
           <tbody>
             <tr>
-              <td><p><b>Capital City: </b></p> </td>
-              <td><p>{this.state.capitalCity}</p> </td>
-              <td className="table-righter"><p><b>Land Area:</b> </p></td>
-              <td><p>{addCommas(this.state.countryArea)} km²</p></td>
+              <td><p><b>Region:</b></p> </td>
+              <td><p className="table-value">{this.state.regionValue}</p> </td>
+              <td className="top-table-righter"><p><b>Capital City: </b></p> </td>
+              <td><p className="table-value">{this.state.capitalCity}</p> </td>
             </tr>
             <tr>
               <td><p><b>Population:</b></p></td>
-              <td><p> {addCommas(this.state.countryPopulation)}</p></td>
+              <td><p className="table-value"> {addCommas(this.state.countryPopulation)}</p></td>
               <td className="table-righter"><p><b>Pop Growth:</b></p></td>
-              <td><p>{this.state.countryGrowth}%</p></td>
+              <td><p className="table-value">{this.state.countryGrowth}%</p></td>
             </tr>
             <tr>
               <td><p><b>Pop Density: </b></p></td>
-              <td><p>{Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p></td>
+              <td><p className="table-value">{Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p></td>
               <td className="table-righter"><p><b>Income Level:</b></p></td>
-              <td><p>{this.state.incomeLevelValue}</p></td>
+              <td><p className="table-value">{this.state.incomeLevelValue}</p></td>
+            </tr>
+            <tr>
+              <td><p><b>Land Area: </b></p> </td>
+              <td><p className="table-value">{addCommas(this.state.countryArea)} km²</p></td>
+              <td className="table-righter"><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
+              <td><p className="table-value">{addCommas(this.state.tradeBalance)}</p></td>
             </tr>
             <tr>
               <td><p><b>GDP:</b></p></td>
-              <td><p>${addCommas(this.state.countryGdp)}</p></td>
+              <td><p className="table-value">${addCommas(this.state.countryGdp)}</p></td>
               <td className="table-righter"><p><b>GDP per Capita:</b></p></td>
-              <td><p>${addCommas(this.state.perCapita)}</p></td>
+              <td><p className="table-value">${addCommas(this.state.perCapita)}</p></td>
             </tr>
             <tr>
               <td><p><b>National Debt {this.state.debtYear}: </b></p></td>
-              <td><p>${addCommas(this.state.countryDebt)}</p></td>
+              <td><p className="table-value">${addCommas(this.state.countryDebt)}</p></td>
               <td className="table-righter"><p><b>Unemployment: </b></p></td>
-              <td><p> ${this.state.unemployment}%</p></td>
+              <td><p className="table-value"> ${this.state.unemployment}%</p></td>
             </tr>
             <tr>
               <td><p><b>National Deficit {this.state.debtYear}: </b></p></td>
-              <td><p>{addCommas(this.state.countryDeficit)}</p></td>
-              <td className="table-righter"><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
-              <td><p>{addCommas(this.state.tradeBalance)}</p></td>
+              <td><p className="table-value">{addCommas(this.state.countryDeficit)}</p></td>
+              <td className="table-righter"><p><b>Life Expectency at Birth 2016: </b></p></td>
+              <td><p className="table-value"> {this.state.lifeExpectency}</p></td>
             </tr>
             <tr>
               <td><p><b>Death Rate 2015 / 1,000: </b></p></td>
-              <td><p id="table-value">{this.state.deathRate}</p></td>
+              <td><p className="table-value">{this.state.deathRate}</p></td>
               <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
-              <td><p id="table-value">{this.state.birthRate}</p></td>
+              <td><p className="table-value">{this.state.birthRate}</p></td>
             </tr>
             <tr>
-              <td><p><b>Life Expectency at Birth 2016: </b></p></td>
-              <td><p id="table-value"> {this.state.lifeExpectency}</p></td>
             </tr>
           </tbody>
         </table>
