@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import DebtSetGDP from './DebtGDP';
+import EasyAreaChart from './EasyAreaChart';
 import '../CSS/WorldBank.css';
 
 
@@ -21,7 +22,21 @@ function negativeDollar(num) {
 }
 
 export default class WorldBank extends Component {
+  constructor(props) {
+    super(props);
+    this.toggleChart = this.toggleChart.bind(this);
+    this.renderPopulation = this.renderPopulation.bind(this);
+    this.renderPopGrowth = this.renderPopGrowth.bind(this);
+    this.renderTradeBalance = this.renderTradeBalance.bind(this);
+    this.renderPopDensity = this.renderPopDensity.bind(this);
+    this.renderGdp = this.renderGdp.bind(this);
+    this.renderGdpPerCapita = this.renderGdpPerCapita.bind(this);
+  }
   state = {
+    chartToggle: 0,
+    chartData: null,
+    chartAxis1: null,
+    chartAxis2: null,
     testCountry: "Laos",
     flagUrl: null,
     popData: null,
@@ -32,12 +47,11 @@ export default class WorldBank extends Component {
     incomeLevelId: null,
     incomeLevelValue: null,
     countryLatitude: null,
-    countruLongtitude: null,
+    countryLongtitude: null,
     capitalCity: "",
     growthData: null,
     countryGrowth: null,
     countryArea: null,
-    populationDensity: null,
     gdpData: null,
     countryGdp: null,
     gdpYear: null,
@@ -83,7 +97,7 @@ export default class WorldBank extends Component {
         incomeLevelId: res.data[1][0]["incomeLevel"]["id"],
         incomeLevelValue: res.data[1][0]["incomeLevel"]["value"],
         countryLatitude: res.data[1][0]["countryLatitude"],
-        countruLongtitude: res.data[1][0]["countruLongtitude"],
+        countryLongtitude: res.data[1][0]["countryLongtitude"],
         capitalCity: res.data[1][0]["capitalCity"],
       });
     });
@@ -298,16 +312,100 @@ export default class WorldBank extends Component {
     this.getTradeBalance(this.props.code);
   }
 
+  renderChart() {
+    if (this.state.chartToggle) {
+      return (
+        (<EasyAreaChart chartData={this.state.chartData} chartAxis1={this.state.chartAxis1} chartAxis2={this.state.chartAxis2} />)
+      )
+    }
+  }
+
+  toggleChart(chartData, axis1, axis2) {
+    this.setState({
+      chartData: chartData,
+      chartAxis1: axis1,
+      chartAxis2: axis2
+    });
+    !this.state.chartToggle ? this.setState({chartToggle: 1}) : this.setState({chartToggle: 0});
+  }
+
+  renderPopulation() {
+    let pointers = this.state.popData[1].map(record => {
+      return {x: record.date, y:(record.value / 1000000)}
+    });
+    this.toggleChart(pointers, "Year", "Population");
+  }
+
+  renderPopGrowth() {
+    let pointers = this.state.growthData[1].map(record => {
+      return {x: record.date, y:record.value}
+    });
+    this.toggleChart(pointers, "Year", "Pop Growth %");
+  }
+
+  renderPopDensity() {
+    let area = this.state.countryArea;
+    let pointers = this.state.popData[1].map(record => {
+      let density = (record.value / area).toFixed(2);
+      return {x: record.date, y: density}
+    });
+    console.log(pointers);
+    this.toggleChart(pointers, "Year", "Density (per km²)");
+  }
+
+  renderTradeBalance() {
+    let data = this.state.tradeBalanceData;
+
+    let pointers = data[1].map(record => {
+      return {x: record.date, y: record.value}
+    });
+    this.toggleChart(pointers, "Year", "Trade Balance");
+  }
+
+  renderGdp() {
+    let pointers = this.state.gdpData[1].map(record => {
+      return {x: record.date, y: (record.value / 1000000000)}
+    });
+    this.toggleChart(pointers, "Year", "(billion $USD");
+  }
+
+  renderGdpPerCapita() {
+    let pointers = this.state.perCapitaData[1].map(record => {
+      return {x: record.date, y: record.value}
+    });
+    console.log(pointers);
+    this.toggleChart(pointers, "Year", "GDP Per Capita");
+  }
+
+  renderNationalDebt() {
+
+  }
+
+  renderUnemployment() {
+
+  }
+
+  renderNationalDeficit() {
+
+  }
+
+  renderLifeExpectency() {
+
+  }
+
+  renderBirthRate() {
+
+  }
+
+  renderDeathRate() {
+
+  }
+
   render(){
     return(
       <div className="world-bank">
         <img className="flag" src={this.state.flagUrl} />
         <h1 className="countryName">{this.props.name} </h1>
-        <table>
-          <tbody>
-
-          </tbody>
-        </table>
         <table>
           <tbody>
             <tr>
@@ -317,13 +415,13 @@ export default class WorldBank extends Component {
               <td><p className="table-value">{this.state.capitalCity}</p> </td>
             </tr>
             <tr>
-              <td><p><b>Population:</b></p></td>
+              <td><p onClick={this.renderPopulation}><b>Population:</b></p></td>
               <td><p className="table-value"> {addCommas(this.state.countryPopulation)}</p></td>
-              <td className="table-righter"><p><b>Pop Growth:</b></p></td>
+              <td className="table-righter" onClick={this.renderPopGrowth}><p><b>Pop Growth:</b></p></td>
               <td><p className="table-value">{this.state.countryGrowth}%</p></td>
             </tr>
             <tr>
-              <td><p><b>Pop Density: </b></p></td>
+              <td><p onClick={this.renderPopDensity}><b>Pop Density: </b></p></td>
               <td><p className="table-value">{Math.round(this.state.countryPopulation / this.state.countryArea)} per km²</p></td>
               <td className="table-righter"><p><b>Income Level:</b></p></td>
               <td><p className="table-value">{this.state.incomeLevelValue}</p></td>
@@ -331,13 +429,13 @@ export default class WorldBank extends Component {
             <tr>
               <td><p><b>Land Area: </b></p> </td>
               <td><p className="table-value">{addCommas(this.state.countryArea)} km²</p></td>
-              <td className="table-righter"><p><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
+              <td className="table-righter"><p onClick={this.renderTradeBalance}><b>Trade Balance {this.state.tradeBalanceYear}:</b></p></td>
               <td><p className="table-value">{addCommas(this.state.tradeBalance)}</p></td>
             </tr>
             <tr>
-              <td><p><b>GDP:</b></p></td>
+              <td><p onClick={this.renderGdp}><b>GDP:</b></p></td>
               <td><p className="table-value">${addCommas(this.state.countryGdp)}</p></td>
-              <td className="table-righter"><p><b>GDP per Capita:</b></p></td>
+              <td className="table-righter"><p onClick={this.renderGdpPerCapita}><b>GDP per Capita:</b></p></td>
               <td><p className="table-value">${addCommas(this.state.perCapita)}</p></td>
             </tr>
             <tr>
@@ -353,16 +451,18 @@ export default class WorldBank extends Component {
               <td><p className="table-value"> {this.state.lifeExpectency}</p></td>
             </tr>
             <tr>
-              <td><p><b>Death Rate 2015 / 1,000: </b></p></td>
+              <td><p><b>Death Rate / 1,000 2015: </b></p></td>
               <td><p className="table-value">{this.state.deathRate}</p></td>
-              <td className="table-righter"><p><b>Birth Rate 2016 / 1,000:</b></p></td>
+              <td className="table-righter"><p><b>Birth Rate / 1,000 2016:</b></p></td>
               <td><p className="table-value">{this.state.birthRate}</p></td>
             </tr>
             <tr>
             </tr>
           </tbody>
         </table>
-        <p>{this.calculateDebtFromGdp()}</p>
+        <button type="submit" onClick={this.renderPopulation}>Click for Chart</button>
+        {this.renderChart()}
+        {this.calculateDebtFromGdp()}
         <br />
         <hr />
         <br />
