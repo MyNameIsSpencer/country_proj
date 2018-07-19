@@ -31,6 +31,12 @@ export default class WorldBank extends Component {
     this.renderPopDensity = this.renderPopDensity.bind(this);
     this.renderGdp = this.renderGdp.bind(this);
     this.renderGdpPerCapita = this.renderGdpPerCapita.bind(this);
+    this.renderNationalDebt = this.renderNationalDebt.bind(this);
+    this.renderUnemployment = this.renderUnemployment.bind(this);
+    this.renderNationalDeficit = this.renderNationalDeficit.bind(this);
+    this.renderLifeExpectency = this.renderLifeExpectency.bind(this);
+    this.renderBirthRate = this.renderBirthRate.bind(this);
+    this.renderDeathRate = this.renderDeathRate.bind(this);
   }
   state = {
     chartToggle: 0,
@@ -331,14 +337,18 @@ export default class WorldBank extends Component {
 
   renderPopulation() {
     let pointers = this.state.popData[1].map(record => {
-      return {x: record.date, y:(record.value / 1000000)}
+      if (record.value) {
+        return {x: record.date, y:(record.value / 1000000)}
+      }
     });
     this.toggleChart(pointers, "Year", "Population");
   }
 
   renderPopGrowth() {
     let pointers = this.state.growthData[1].map(record => {
-      return {x: record.date, y:record.value}
+      if (record.value) {
+        return {x: record.date, y:record.value}
+      }
     });
     this.toggleChart(pointers, "Year", "Pop Growth %");
   }
@@ -346,59 +356,112 @@ export default class WorldBank extends Component {
   renderPopDensity() {
     let area = this.state.countryArea;
     let pointers = this.state.popData[1].map(record => {
-      let density = (record.value / area).toFixed(2);
-      return {x: record.date, y: density}
+      if (record.value) {
+        let density = (record.value / area).toFixed(2);
+        return {x: record.date, y: density}
+      }
     });
-    console.log(pointers);
     this.toggleChart(pointers, "Year", "Density (per km²)");
   }
 
   renderTradeBalance() {
     let data = this.state.tradeBalanceData;
-
-    let pointers = data[1].map(record => {
-      return {x: record.date, y: record.value}
+    let pointers = [];
+    let mapper = data[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
     });
     this.toggleChart(pointers, "Year", "Trade Balance");
   }
 
   renderGdp() {
-    let pointers = this.state.gdpData[1].map(record => {
-      return {x: record.date, y: (record.value / 1000000000)}
+    let pointers = [];
+    let mapper = this.state.gdpData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: (record.value / 1000000000)});
+      }
     });
     this.toggleChart(pointers, "Year", "(billion $USD");
   }
 
   renderGdpPerCapita() {
-    let pointers = this.state.perCapitaData[1].map(record => {
-      return {x: record.date, y: record.value}
+    let pointers = [];
+    let mapper = this.state.perCapitaData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
     });
-    console.log(pointers);
     this.toggleChart(pointers, "Year", "GDP Per Capita");
   }
 
   renderNationalDebt() {
-
+    let pointers = [];
+    let mapCounter = 1800;
+    let mapper = this.state.debtArray[4].Value.map(record => {
+      if (record) {
+        pointers.push({x: mapCounter, y: record});
+      }
+      mapCounter += 1;
+    });
+    this.toggleChart(pointers, "Year", "National Debt");
   }
 
   renderUnemployment() {
-
+    let pointers = [];
+    let mapper = this.state.unemployData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
+    });
+    this.toggleChart(pointers, "Year", "Unemployment %");
   }
 
   renderNationalDeficit() {
-
+    let pointers = [];
+    let debtSet = this.state.debtArray;
+    let previous = 111111111111111;
+    let mapper = this.state.unemployData[1].map(record => {
+      if (record.value) {
+        if (previous == 111111111111111) {
+          previous = record.value;
+        } else {
+          pointers.push({x: record.date, y: (record.value - previous)});
+        }
+      }
+    });
+    console.log(pointers);
+    this.toggleChart(pointers, "Year", "Deficit");
   }
 
   renderLifeExpectency() {
-
+    let pointers = [];
+    let mapper = this.state.lifeExpectencyData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
+    });
+    this.toggleChart(pointers, "Year", "Life Expectency");
   }
 
   renderBirthRate() {
-
+    let pointers = [];
+    let mapper = this.state.birthData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
+    });
+    this.toggleChart(pointers, "Year", "Birth Rate per 1000");
   }
 
   renderDeathRate() {
-
+    let pointers = [];
+    let mapper = this.state.deathData[1].map(record => {
+      if (record.value) {
+        pointers.push({x: record.date, y: record.value});
+      }
+    });
+    this.toggleChart(pointers, "Year", "Death Rate per 1000");
   }
 
   render(){
@@ -439,21 +502,21 @@ export default class WorldBank extends Component {
               <td><p className="table-value">${addCommas(this.state.perCapita)}</p></td>
             </tr>
             <tr>
-              <td><p><b>National Debt {this.state.debtYear}: </b></p></td>
+              <td><p onClick={this.renderNationalDebt}><b>National Debt {this.state.debtYear}: </b></p></td>
               <td><p className="table-value">${addCommas(this.state.countryDebt)}</p></td>
-              <td className="table-righter"><p><b>Unemployment: </b></p></td>
+              <td className="table-righter"><p onClick={this.renderUnemployment}><b>Unemployment: </b></p></td>
               <td><p className="table-value"> ${this.state.unemployment}%</p></td>
             </tr>
             <tr>
-              <td><p><b>National Deficit {this.state.debtYear}: </b></p></td>
+              <td><p onClick={this.renderNationalDeficit}><b>National Deficit {this.state.debtYear}: </b></p></td>
               <td><p className="table-value">{addCommas(this.state.countryDeficit)}</p></td>
-              <td className="table-righter"><p><b>Life Expectency at Birth 2016: </b></p></td>
+              <td className="table-righter"><p onClick={this.renderLifeExpectency}><b>Life Expectency at Birth 2016: </b></p></td>
               <td><p className="table-value"> {this.state.lifeExpectency}</p></td>
             </tr>
             <tr>
-              <td><p><b>Death Rate / 1,000 2015: </b></p></td>
+              <td><p onClick={this.renderDeathRate}><b>Death Rate / 1,000 2015: </b></p></td>
               <td><p className="table-value">{this.state.deathRate}</p></td>
-              <td className="table-righter"><p><b>Birth Rate / 1,000 2016:</b></p></td>
+              <td className="table-righter"><p onClick={this.renderBirthRate}><b>Birth Rate / 1,000 2016:</b></p></td>
               <td><p className="table-value">{this.state.birthRate}</p></td>
             </tr>
             <tr>
