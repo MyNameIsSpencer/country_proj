@@ -51,10 +51,13 @@ export default class EasyAreaChart extends PureComponent {
     return(
       <div>
             <AreaChart
-          // xType={'time'}     <<<<<<<<  doesn't like our data
+          // xType={'time'}
+          // xType={'text'}
           axes
           xTicks={5}
           yTicks={3}
+          // xTickNumber={5}
+          // yTickNumber={3}
           dataPoints
           grid
           areaColors={['black', 'purple']}

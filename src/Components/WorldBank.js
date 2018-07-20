@@ -1,3 +1,5 @@
+
+
 import React, { Component } from 'react';
 import axios from 'axios';
 import DebtSetGDP from './DebtGDP';
@@ -398,13 +400,20 @@ export default class WorldBank extends Component {
   renderNationalDebt() {
     let pointers = [];
     let mapCounter = 1800;
+    let gdpData = this.state.gdpData[1];
     let mapper = this.state.debtArray[4].Value.map(record => {
       if (record) {
-        pointers.push({x: mapCounter, y: record});
+        for (let i = 0; i < gdpData.length; i++) {
+          if (gdpData[i].date == mapCounter) {
+            pointers.push({x: mapCounter, y: ((gdpData[i].value) / 1000000 / 100 * record)});
+            break;
+          }
+        }
       }
       mapCounter += 1;
     });
-    this.toggleChart(pointers, "Year", "National Debt");
+    this.toggleChart(pointers, "Year", "National Debt (millions)");
+    console.log(gdpData);
   }
 
   renderUnemployment() {
