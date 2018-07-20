@@ -50,7 +50,7 @@ export default class EasyAreaChart extends PureComponent {
   render(){
     return(
       <div>
-            <AreaChart
+        <AreaChart
           // xType={'time'}
           // xType={'text'}
           axes

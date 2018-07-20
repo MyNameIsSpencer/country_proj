@@ -40,7 +40,6 @@ class SearchBar extends Component {
           <input placeholder="Country Name" onChange={this.handleUserInputChange} value={this.state.letters}>
           </input>
           <button type="submit" onClick={this.handleSubmit}> Submit </button>
-
         </form>
 
         <AutocompleteBox letters={this.state.letters} countryList={CountryList} handleAutocompleteOption={this.handleAutocompleteOption}/>

@@ -1,11 +1,9 @@
 
-
 import React, { Component } from 'react';
 import axios from 'axios';
 import DebtSetGDP from './DebtGDP';
 import EasyAreaChart from './EasyAreaChart';
 import '../CSS/WorldBank.css';
-
 
 function addCommas(nStr) {
   nStr += '';
