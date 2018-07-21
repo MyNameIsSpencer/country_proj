@@ -44,7 +44,7 @@ export default class GlobalAnalytics extends Component {
     return(
       <div>
         <form>
-          
+
           <ul className="list-column">
             <li><label><input type="checkbox" indicator="SP.POP.TOTL" value="population" onChange={e => this.handleCheckboxChange(e.target.indicator)} /> Population</label></li>
             <li><label><input type="checkbox" value="popGrowthPercent" onChange={e => this.handleCheckboxChange(e.target.value)} /> Population Growth(%)</label></li>
@@ -67,7 +67,7 @@ export default class GlobalAnalytics extends Component {
           <input type="submit" value="Submit" />
         </form>
 
-        <CorrMatrix />
+        <CorrMatrix indicatorList={this.state.selectedIndicators} />
       </div>
     )
   }

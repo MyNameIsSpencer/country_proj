@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import DebtSetGDP from './DebtGDP';
 import EasyAreaChart from './EasyAreaChart';
-import '../CSS/WorldBank.css';
+import '../CSS/SoloCountry.css';
 
 function addCommas(nStr) {
   nStr += '';
@@ -21,7 +21,7 @@ function negativeDollar(num) {
   return `-$${addCommas(Math.abs(num))}`;
 }
 
-export default class WorldBank extends Component {
+export default class SoloCountry extends Component {
   constructor(props) {
     super(props);
     this.toggleChart = this.toggleChart.bind(this);

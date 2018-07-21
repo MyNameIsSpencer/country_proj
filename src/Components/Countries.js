@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import WorldBank from './WorldBank';
+import SoloCountry from './SoloCountry';
 import CountryList from './CountryList';
 import SearchBar from './SearchBar';
 import '../CSS/Countries.css';
@@ -44,7 +44,7 @@ export default class Countries extends Component {
       return this.state.selectedCountries.map( country => {
         return (
           <li key={country.id}>
-            <WorldBank code={country.code} name={country.name}/>
+            <SoloCountry code={country.code} name={country.name}/>
           </li>
         )
       });
