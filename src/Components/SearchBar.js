@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import AutocompleteBox from './AutocompleteBox';
-import '../CSS/SearchBar.css';
 import CountryList from './CountryList';
 
 

@@ -7,7 +7,6 @@ import React, { Component } from 'react';
 import Countries from './Components/Countries';
 import GlobalAnalytics from './Components/GlobalAnalytics';
 import Header from './Components/Header';
-import './CSS/App.css';
 
 class App extends Component {
   // <Route path="/services" component={Services} />
