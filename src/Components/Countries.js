@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import WorldBank from './WorldBank';
 import CountryList from './CountryList';
 import SearchBar from './SearchBar';
+import '../CSS/Countries.css';
 
 
-class Countries extends Component {
+export default class Countries extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,5 +62,3 @@ class Countries extends Component {
     )
   }
 }
-
-export default Countries;

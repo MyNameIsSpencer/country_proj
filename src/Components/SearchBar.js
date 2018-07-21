@@ -35,7 +35,6 @@ class SearchBar extends Component {
   render() {
     return(
       <div className="search-bar">
-        <p> THe SearchBar stuffffffff</p>
         <form onSubmit={this.handleSubmit}>
           <input placeholder="Country Name" onChange={this.handleUserInputChange} value={this.state.letters}>
           </input>

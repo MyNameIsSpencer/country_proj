@@ -1,0 +1,8 @@
+.list-column{
+  display: inline-block;
+  margin-right: 50px;
+}
+
+input[type=submit] {
+  margin-left: 50px;
+}
