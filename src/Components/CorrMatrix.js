@@ -52,7 +52,7 @@ export default class CorrMatrix extends Component {
     lister.map(indicator =>
       this.getIndicators(indicator)
     );
-    console.log(this.state.dataArray);
+    this.setState({ headingsSwitch: 1 });
   }
 
   getIndicators(indicator) {
@@ -66,10 +66,26 @@ export default class CorrMatrix extends Component {
     });
   }
 
+
+
+  // return this.state.selectedCountries.map( country => {
+  //   return (
+  //     <li key={country.id}>
+  //       <SoloCountry code={country.code} name={country.name}/>
+  //     </li>
+  //   )
+  // });
+
   renderHeadings() {
     let headingsList = this.state.dataArray
     if(this.state.headingsSwitch) {
-
+      return headingsList.map(obj => {
+        return (
+          <th key={obj.id}>
+            {obj.name}
+          </th>
+        )
+      })
     }
   }
 
@@ -119,9 +135,8 @@ export default class CorrMatrix extends Component {
         <table>
           <tbody>
             <tr>
-              <th>
-                {this.renderHeadings()}
-              </th>
+              <th> Nothing </th>
+              {this.renderHeadings()}
             </tr>
             <tr>
             </tr>
