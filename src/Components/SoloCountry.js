@@ -161,7 +161,7 @@ export default class SoloCountry extends Component {
   }
 
   getDeathRate(code) {  //   <<<<< for 2015
-    let query = '	SP.DYN.CDRT.IN';
+    let query = 'SP.DYN.CDRT.IN';
     axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       let deathRate = res.data[1][1]['value'];

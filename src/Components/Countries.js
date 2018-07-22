@@ -18,9 +18,9 @@ export default class Countries extends Component {
     this.oneCountry = this.oneCountry.bind(this);
    }
 
-   appLogger() {
-     console.log("Selected Countries: " + this.state.selectedCountries);
-   }
+  appLogger() {
+    console.log("Selected Countries: " + this.state.selectedCountries);
+  }
 
   oneCountry(country) {
     let newCode = CountryList[country];
@@ -40,15 +40,15 @@ export default class Countries extends Component {
     this.renderCountries();
   }
 
-    renderCountries() {
-      return this.state.selectedCountries.map( country => {
-        return (
-          <li key={country.id}>
-            <SoloCountry code={country.code} name={country.name}/>
-          </li>
-        )
-      });
-    }
+  renderCountries() {
+    return this.state.selectedCountries.map( country => {
+      return (
+        <li key={country.id}>
+          <SoloCountry code={country.code} name={country.name}/>
+        </li>
+      )
+    });
+  }
 
   render() {
     return(
