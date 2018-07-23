@@ -513,7 +513,7 @@ export default class SoloCountry extends Component {
               <td><p onClick={this.renderNationalDebt}><b>National Debt {this.state.debtYear}: </b></p></td>
               <td><p className="table-value">${addCommas(this.state.countryDebt)}</p></td>
               <td className="table-righter"><p onClick={this.renderUnemployment}><b>Unemployment: </b></p></td>
-              <td><p className="table-value"> ${this.state.unemployment}%</p></td>
+              <td><p className="table-value"> {this.state.unemployment}%</p></td>
             </tr>
             <tr>
               <td><p onClick={this.renderNationalDeficit}><b>National Deficit {this.state.debtYear}: </b></p></td>

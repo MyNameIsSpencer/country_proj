@@ -1,12 +1,17 @@
-.small-point {
-  font-size: 10px;
-  margin-left: 20px;
-}
 
 li {
   list-style-type: none;
   text-align: left;
   margin-left: 15px;
+}
+
+.countries {
+  margin-top: 40px;
+}
+
+.small-point {
+  font-size: 10px;
+  margin-left: 20px;
 }
 
 .autoCountry {

@@ -52,7 +52,7 @@ export default class Countries extends Component {
 
   render() {
     return(
-      <div>
+      <div className="countries">
         <SearchBar oneCountry={this.oneCountry}/>
         <ul>
           {this.renderCountries()}
