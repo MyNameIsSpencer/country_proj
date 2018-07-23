@@ -140,7 +140,8 @@ export default class SoloCountry extends Component {
   }
 
   getGDPPerCapita(code) {
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SL.GDP.PCAP.EM.KD?format=json`)
+    let query = "NY.GDP.PCAP.CD";
+    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       this.setState({
         perCapitaData: res.data,

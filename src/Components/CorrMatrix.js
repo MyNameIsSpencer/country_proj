@@ -60,6 +60,7 @@ export default class CorrMatrix extends Component {
     let tempArr = this.state.dataArray;
     axios.get(`http://api.worldbank.org/v2/countries/wld/indicators/${code}?format=json`)
     .then(res => {
+      console.log(res);
       tempArr.push({id: idCounter, name: indicator, data: res.data});
       this.setState({ dataArray: tempArr });
       idCounter ++;

@@ -72,7 +72,7 @@ export default class GlobalAnalytics extends Component {
             <li><label><input type="checkbox" name="Birth Rate" onChange={e => this.handleCheckboxChange(e.target.name)} /> Birth Rate per 1000</label></li>
             <li><label><input type="checkbox" name="Death Rate" onChange={e => this.handleCheckboxChange(e.target.name)} /> Death Rate per 1000</label></li>
             <li><label><input type="checkbox" name="Life Expectency" onChange={e => this.handleCheckboxChange(e.target.name)} /> Life Expectency</label></li>
-            <li><label><input type="checkbox" name="Trade Balance" onChange={e => this.handleCheckboxChange(e.target.name)} /> Trade Balance</label></li>
+            {/* <li><label><input type="checkbox" name="Trade Balance" onChange={e => this.handleCheckboxChange(e.target.name)} /> Trade Balance</label></li> */}
           </ul>
           <br/>
           <button type="submit" onClick={e => {this.handleMatrixSubmit(e)}} > Submit </button>
