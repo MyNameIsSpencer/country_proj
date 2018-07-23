@@ -67,15 +67,6 @@ export default class CorrMatrix extends Component {
   }
 
 
-
-  // return this.state.selectedCountries.map( country => {
-  //   return (
-  //     <li key={country.id}>
-  //       <SoloCountry code={country.code} name={country.name}/>
-  //     </li>
-  //   )
-  // });
-
   renderHeadings() {
     let headingsList = this.state.dataArray
     if(this.state.headingsSwitch) {
@@ -89,40 +80,65 @@ export default class CorrMatrix extends Component {
     }
   }
 
-  renderRow(counter) {
-    return(
-      <tr>
-        <td>{counter}</td>
-      </tr>
-    )
+  renderBelowHeadings() {
+    let lister = this.state.dataArray
+    if(this.state.headingsSwitch) {
+      return lister.map(obj => {
+        return (
+          <tr key={obj.id}>
+            <th> {obj.name} </th>
+            {this.renderOneRow(obj.name, obj.data)}
+          </tr>
+        )
+      })
+    }
   }
 
+  renderOneRow(namer, datar) {
+    let listen = this.state.dataArray;
+    return listen.map(obj => {
+      if (namer === obj.name) {
+        return(<td>  </td>)
+      } else {
+        return (
+          <td>{this.calcCorr(datar[1], obj.data[1])}</td>
+        )
+      }
+    })
+  }
 
+  calcCorr(aer, ber) {
+    let data1 = aer.map( x => x);
+    let data2 = ber.map( x => x);
 
-
-
-
-  renderAllRows() {
-    let indicators = this.state.dataArray;
-    let counter = 0;
-    for (let i = 1; i < 5; i++) {
-      return (<div><td><p>Number {i}</p></td></div>)  //this.renderRow(i);
+    let dataSet = [];
+    let sigmaX = 0;
+    let sigmaY = 0;
+    let sigmaXY = 0;
+    let sigmaXSqr = 0;
+    let sigmaYSqr = 0;
+    for (let i = 0; i < data1.length; i++) {
+      for (let j = 0; j < data2.length; j++) {
+        if (data1[i].date === data2[j].date) {
+          if (data1[i].value !== null && data2[j].value !== null) {
+            dataSet.push([data1[i].value,data2[j].value]);
+          }
+          data2.splice( j, 1);
+          break;
+        }
+      }
     }
-    // indicators.map(indicator => renderRow(counter));
-    // let tableSize = indicators.length;
-    // for (i =1 ; i < tableSize + 1; i++) {
-    //   <
-    // }
-    // return (
-    //   <tr>
-    //     <td>counter</td>
-    //     {this.renderCells}
-    //     tableSize.map(indicator => {
-    //       counter ++
-    //       return <td value={indicator[1][0]}/>
-    //     )}
-    //   </tr>
-    // )
+    for (let i = 0; i < dataSet.length; i++) {
+      sigmaX += dataSet[i][0];
+      sigmaY += dataSet[i][1];
+      sigmaXY += dataSet[i][0] * dataSet[i][1];
+      sigmaXSqr += dataSet[i][0] * dataSet[i][0];
+      sigmaYSqr += dataSet[i][1] * dataSet[i][1];
+    }
+    let top = ((sigmaXY * dataSet.length) - (sigmaX * sigmaY));
+    let bottom = Math.sqrt( ((dataSet.length * sigmaXSqr) - (sigmaX * sigmaX))*((dataSet.length * sigmaYSqr) - (sigmaY * sigmaY)) );
+    let r = (top / bottom).toFixed(3);
+    return r;
   }
 
   renderCells() {
@@ -138,8 +154,7 @@ export default class CorrMatrix extends Component {
               <th> Nothing </th>
               {this.renderHeadings()}
             </tr>
-            <tr>
-            </tr>
+            {this.renderBelowHeadings()}
           </tbody>
         </table>
       </div>
