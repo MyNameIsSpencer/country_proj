@@ -152,7 +152,7 @@ export default class CorrMatrix extends Component {
         <table>
           <tbody>
             <tr>
-              <th> Nothing </th>
+              <th> </th>
               {this.renderHeadings()}
             </tr>
             {this.renderBelowHeadings()}
