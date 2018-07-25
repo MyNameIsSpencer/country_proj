@@ -87,14 +87,14 @@ export default class SoloCountry extends Component {
   }
 
   getPopulation(code) {
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.TOTL?format=json`)
     .then(res => {
       this.setState({ popData: res.data, countryPopulation: res.data[1][0].value });
     });
   }
 
   getGeneral(code) {
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/?format=json`)
     .then(res => {
       this.setState({
         generalData: res.data,
@@ -110,7 +110,7 @@ export default class SoloCountry extends Component {
   }
 
   getPopGrowth(code){
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.GROW?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/SP.POP.GROW?format=json`)
     .then(res => {
       this.setState({
         growthData: res.data,
@@ -120,7 +120,7 @@ export default class SoloCountry extends Component {
   }
 
   getArea(code){
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/AG.LND.TOTL.K2?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/AG.LND.TOTL.K2?format=json`)
     .then(res => {
       let area = res.data[1][0].value;
       this.setState({
@@ -130,7 +130,7 @@ export default class SoloCountry extends Component {
   }
 
   getGDP(code) {
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/NY.GDP.MKTP.CD?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/NY.GDP.MKTP.CD?format=json`)
     .then(res => {
       this.setState({
         gdpData: res.data,
@@ -141,7 +141,7 @@ export default class SoloCountry extends Component {
 
   getGDPPerCapita(code) {
     let query = "NY.GDP.PCAP.CD";
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       this.setState({
         perCapitaData: res.data,
@@ -152,7 +152,7 @@ export default class SoloCountry extends Component {
 
   getBirthRate(code){  //  <<<< for 2016
     let query = 'SP.DYN.CBRT.IN';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       this.setState({
         birthData: res.data,
@@ -163,7 +163,7 @@ export default class SoloCountry extends Component {
 
   getDeathRate(code) {  //   <<<<< for 2015
     let query = 'SP.DYN.CDRT.IN';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       let deathRate = res.data[1][1]['value'];
       deathRate = Math.round(deathRate);
@@ -177,7 +177,7 @@ export default class SoloCountry extends Component {
 
   getUnemployment(code) {  //  <<<< 2017
     let query = 'SL.UEM.TOTL.ZS';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       let unemployment = res.data[1][0]['value'].toFixed(3);
       this.setState({
@@ -189,7 +189,7 @@ export default class SoloCountry extends Component {
 
   getLifeExpectency(code) {  //  <<<<  2016
     let query = 'SP.DYN.LE00.IN';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       let lifeExpectency = res.data[1][1]['value'];
       lifeExpectency = Math.round(lifeExpectency);
@@ -202,7 +202,7 @@ export default class SoloCountry extends Component {
 
   getTradeBalance(code) {   /////  <<<< 2017, positive is net export, negative is net import
     let query = 'NE.RSB.GNFS.CD';
-    axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+    axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
     .then(res => {
       let value = null;
       let year = null;
@@ -297,7 +297,7 @@ export default class SoloCountry extends Component {
 
   // getPractice(code) {
   //   let query = 'SP.DYN.CBRT.IN';
-  //   axios.get(`http://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
+  //   axios.get(`https://api.worldbank.org/v2/countries/${code}/indicators/${query}?format=json`)
   //   .then(res => {
   //     console.log(res.data);
   //   });
@@ -310,7 +310,7 @@ export default class SoloCountry extends Component {
     this.getArea(this.props.code);
     this.getGDP(this.props.code);
     this.getGDPPerCapita(this.props.code);
-    this.setState({ flagUrl: `http://www.countryflags.io/${this.props.code}/flat/64.png`});
+    this.setState({ flagUrl: `https://www.countryflags.io/${this.props.code}/flat/64.png`});
     this.getBirthRate(this.props.code);
     this.getDeathRate(this.props.code);
     this.getDebt();
